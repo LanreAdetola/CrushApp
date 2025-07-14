@@ -1,0 +1,89 @@
+@page "/profile"
+@using CrushApp.Data.DTOs
+@using CrushApp.Data.Services
+@inject IUserService UserService
+
+<h3>My Profile</h3>
+
+@if (loading)
+{
+    <p>Loading...</p>
+}
+else if (error)
+{
+    <div class="alert alert-danger">Could not load profile.</div>
+}
+else
+{
+    <EditForm Model="@updateUser" OnValidSubmit="HandleUpdate">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label>Username</label>
+            <InputText @bind-Value="updateUser.Username" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Email</label>
+            <InputText @bind-Value="updateUser.Email" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>New Password</label>
+            <InputText @bind-Value="updateUser.Password" type="password" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update</button>
+    </EditForm>
+
+    @if (!string.IsNullOrEmpty(status))
+    {
+        <div class="alert @(status.Contains("success") ? "alert-success" : "alert-danger") mt-3">
+            @status
+        </div>
+    }
+}
+
+@code {
+    private UserUpdateDto updateUser = new();
+    private string status = "";
+    private bool loading = true;
+    private bool error = false;
+
+    private int userId = 1; // TODO: Replace with real logged-in user ID (from JWT)
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var user = await UserService.GetUserByIdAsync(userId);
+            if (user is null)
+            {
+                error = true;
+                return;
+            }
+
+            updateUser = new UserUpdateDto
+            {
+                Username = user.Username,
+                Email = user.Email,
+                Password = ""
+            };
+        }
+        catch
+        {
+            error = true;
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    private async Task HandleUpdate()
+    {
+        var success = await UserService.UpdateUserAsync(userId, updateUser);
+        status = success ? "✅ Profile updated successfully!" : "❌ Failed to update profile.";
+    }
+}

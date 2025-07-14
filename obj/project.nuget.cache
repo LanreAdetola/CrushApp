@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "sUEbYf7O+V8=",
+  "success": true,
+  "projectFilePath": "/Users/november/Documents/CRUSH/CrushApp/CrushApp.csproj",
+  "expectedPackageFiles": [
+    "/Users/november/.nuget/packages/microsoft.netcore.app.ref/8.0.17/microsoft.netcore.app.ref.8.0.17.nupkg.sha512",
+    "/Users/november/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.17/microsoft.aspnetcore.app.ref.8.0.17.nupkg.sha512",
+    "/Users/november/.nuget/packages/microsoft.netcore.app.host.osx-arm64/8.0.17/microsoft.netcore.app.host.osx-arm64.8.0.17.nupkg.sha512"
+  ],
+  "logs": []
+}
