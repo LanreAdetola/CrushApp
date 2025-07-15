@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CrushApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d0ec4e6fe743967e65900d1622df3a746893080b")]
 [assembly: System.Reflection.AssemblyProductAttribute("CrushApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CrushApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

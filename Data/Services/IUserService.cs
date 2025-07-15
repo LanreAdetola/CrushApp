@@ -9,4 +9,8 @@ public interface IUserService
 
     // You can keep your Register method too
     Task<UserReadDto?> RegisterUserAsync(UserCreateDto dto);
+
+    Task<CrushApp.Data.Models.User?> GetUserByUsernameAsync(string username);
+
+
 }

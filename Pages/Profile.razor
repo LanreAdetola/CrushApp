@@ -1,9 +1,12 @@
 @page "/profile"
+
+@inject UserSessionService Session
+@inject NavigationManager Nav
 @using CrushApp.Data.DTOs
 @using CrushApp.Data.Services
 @inject IUserService UserService
 
-<h3>My Profile</h3>
+<h3>💖 My Profile & Preferences</h3>
 
 @if (loading)
 {
@@ -15,14 +18,21 @@ else if (error)
 }
 else
 {
+    <!-- PROFILE SUMMARY CARD -->
+    <div class="card shadow-sm mb-4 p-4">
+        <div><strong>Username:</strong> @updateUser.Username</div>
+        <div><strong>Email:</strong> @updateUser.Email</div>
+        <div><strong>Gender:</strong> @updateUser.Gender</div>
+        <div><strong>Age:</strong> @updateUser.Age</div>
+        <div><strong>Location:</strong> @updateUser.Location</div>
+        <div><strong>Interests:</strong> @updateUser.Interests</div>
+        <div><strong>Looking for:</strong> @updateUser.PreferredGender</div>
+    </div>
+
+    <!-- PROFILE UPDATE FORM -->
     <EditForm Model="@updateUser" OnValidSubmit="HandleUpdate">
         <DataAnnotationsValidator />
         <ValidationSummary />
-
-        <div class="mb-3">
-            <label>Username</label>
-            <InputText @bind-Value="updateUser.Username" class="form-control" />
-        </div>
 
         <div class="mb-3">
             <label>Email</label>
@@ -30,7 +40,42 @@ else
         </div>
 
         <div class="mb-3">
-            <label>New Password</label>
+            <label>Gender</label>
+            <InputSelect @bind-Value="updateUser.Gender" class="form-control">
+                <option value="">Select</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+            </InputSelect>
+        </div>
+
+        <div class="mb-3">
+            <label>Age</label>
+            <InputNumber @bind-Value="updateUser.Age" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Location</label>
+            <InputText @bind-Value="updateUser.Location" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Interests</label>
+            <InputText @bind-Value="updateUser.Interests" class="form-control" placeholder="e.g. Hiking, Coding, Travel" />
+        </div>
+
+        <div class="mb-3">
+            <label>Looking for</label>
+            <InputSelect @bind-Value="updateUser.PreferredGender" class="form-control">
+                <option value="">Select</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Everyone</option>
+            </InputSelect>
+        </div>
+
+        <div class="mb-3">
+            <label>New Password (optional)</label>
             <InputText @bind-Value="updateUser.Password" type="password" class="form-control" />
         </div>
 
@@ -51,24 +96,27 @@ else
     private bool loading = true;
     private bool error = false;
 
-    private int userId = 1; // TODO: Replace with real logged-in user ID (from JWT)
-
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
+        if (!Session.IsLoggedIn)
+        {
+            Nav.NavigateTo("/login", true);
+            return;
+        }
+
         try
         {
-            var user = await UserService.GetUserByIdAsync(userId);
-            if (user is null)
-            {
-                error = true;
-                return;
-            }
-
+            var user = Session.CurrentUser!;
             updateUser = new UserUpdateDto
             {
                 Username = user.Username,
                 Email = user.Email,
-                Password = ""
+                Password = "",
+                Gender = user.Gender,
+                Age = user.Age,
+                Location = user.Location,
+                Interests = user.Interests,
+                PreferredGender = user.PreferredGender
             };
         }
         catch
@@ -83,7 +131,13 @@ else
 
     private async Task HandleUpdate()
     {
-        var success = await UserService.UpdateUserAsync(userId, updateUser);
+        if (Session.CurrentUser == null)
+        {
+            Nav.NavigateTo("/login", true);
+            return;
+        }
+
+        var success = await UserService.UpdateUserAsync(Session.CurrentUser.NumericId, updateUser);
         status = success ? "✅ Profile updated successfully!" : "❌ Failed to update profile.";
     }
 }

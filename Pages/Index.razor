@@ -1,7 +1,82 @@
 ﻿@page "/"
 
-<h1>Welcome to CrushApp 💘</h1>
+@using CrushApp.Data.DTOs
+@using CrushApp.Data.Services
+@inject UserSessionService Session
+@inject NavigationManager Nav
 
-<p>This is the home of meaningful connections. Ready to start swiping?</p>
+@if (Session.IsLoggedIn)
+{
+    <div class="d-flex flex-column justify-content-center align-items-center vh-100 text-center">
+        <h3>Welcome back, @Session.CurrentUser!.Username 💖</h3>
+        <p>Head to your <a href="/profile">profile</a> to update your info or <a href="/matches">start swiping</a>.</p>
+        <button class="btn btn-danger mt-3" @onclick="Logout">Logout</button>
+    </div>
+}
+else
+{
+    <section class="vh-100 d-flex align-items-center justify-content-center">
+        <div class="container text-center">
 
-<NavLink class="btn btn-primary" href="/register">Create Account</NavLink>
+            <!-- Hero Section -->
+            <div class="mb-4">
+                <h1 class="display-4 fw-bold text-primary">Welcome to CrushApp 💘</h1>
+                <p class="lead text-muted">Where meaningful connections begin. Swipe smart, connect deep.</p>
+                <a href="/register" class="btn btn-lg btn-pink rounded-pill shadow mt-3">❤️ Join Now – It's Free</a>
+            </div>
+
+            <!-- Why Join Cards -->
+            <h4 class="text-dark mb-3">💖 Why Join CrushApp?</h4>
+
+            <div class="row justify-content-center">
+                <div class="col-6 col-md-3 mb-3">
+                    <div class="card h-100 shadow-sm border-0 rounded-4">
+                        <div class="card-body">
+                            <h2 class="display-6">💌</h2>
+                            <h6 class="card-title">Private Messaging</h6>
+                            <p class="card-text small">Chat securely with your matches, anytime, anywhere.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3 mb-3">
+                    <div class="card h-100 shadow-sm border-0 rounded-4">
+                        <div class="card-body">
+                            <h2 class="display-6">🌍</h2>
+                            <h6 class="card-title">Location Matching</h6>
+                            <p class="card-text small">Find matches near you for more real-life connections.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3 mb-3">
+                    <div class="card h-100 shadow-sm border-0 rounded-4">
+                        <div class="card-body">
+                            <h2 class="display-6">🧠</h2>
+                            <h6 class="card-title">Smart Preferences</h6>
+                            <p class="card-text small">Tailored suggestions based on your profile & likes.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3 mb-3">
+                    <div class="card h-100 shadow-sm border-0 rounded-4">
+                        <div class="card-body">
+                            <h2 class="display-6">🔒</h2>
+                            <h6 class="card-title">Secure & Private</h6>
+                            <p class="card-text small">We protect your privacy and data with care.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+@code {
+    private void Logout()
+    {
+        Session.Logout();
+        Nav.NavigateTo("/login");
+    }
+}

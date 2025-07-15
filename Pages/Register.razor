@@ -2,6 +2,9 @@
 @using CrushApp.Data.DTOs
 @using CrushApp.Data.Services
 @inject IUserService UserService
+@inject NavigationManager Nav
+
+@inject IUserService UserService
 
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -47,10 +50,26 @@
 @code {
     private UserCreateDto newUser = new();
     private string status = "";
+    private bool isLoading = false;
 
     private async Task HandleRegister()
     {
+        isLoading = true;
+
         var result = await UserService.RegisterUserAsync(newUser);
-        status = result is not null ? "🎉 User created successfully!" : "❌ Failed to create user. Try again.";
+        
+        if (result is not null)
+        {
+            status = "🎉 User created successfully!";
+            await Task.Delay(1000); // Optional: let user see the success message
+            Nav.NavigateTo("/login"); // 👉 change this to your actual login route
+        }
+        else
+        {
+            status = "❌ Failed to create user. Try again.";
+        }
+
+        isLoading = false;
     }
 }
+

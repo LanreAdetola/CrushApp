@@ -1,0 +1,71 @@
+﻿@page "/login"
+@using CrushApp.Data.DTOs
+@using CrushApp.Data.Services
+
+@inject UserSessionService Session
+
+@inject IUserService UserService
+@inject NavigationManager Nav
+
+<h3 class="text-center mt-4">🔐 Login to Your Account</h3>
+
+<div class="container mt-3">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-sm p-4">
+                <EditForm Model="@loginUser" OnValidSubmit="HandleLogin">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <div class="form-group mb-3">
+                        <label>Username</label>
+                        <InputText @bind-Value="loginUser.Username" class="form-control" />
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label>Password</label>
+                        <InputText @bind-Value="loginUser.Password" type="password" class="form-control" />
+                    </div>
+
+                    <button class="btn btn-success w-100">Login</button>
+                </EditForm>
+
+                @if (!string.IsNullOrEmpty(error))
+                {
+                    <div class="alert alert-danger mt-3">@error</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private LoginDto loginUser = new();
+    private string error = "";
+
+    private async Task HandleLogin()
+    {
+        var user = await UserService.GetUserByUsernameAsync(loginUser.Username);
+
+        if (user == null)
+        {
+            error = "User not found!";
+            return;
+        }
+
+        bool isPasswordValid = BCrypt.Net.BCrypt.Verify(loginUser.Password, user.PasswordHash);
+
+        if (!isPasswordValid)
+        {
+            error = "Invalid password!";
+            return;
+        }
+
+        error = "";
+        // Optionally save user info in state/session here
+        Session.SetUser(user);
+
+
+        Nav.NavigateTo("/profile"); // or wherever you want to go after login
+    }
+}

@@ -1,0 +1,43 @@
+# Build results
+bin/
+obj/
+out/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# VS Code settings
+.vscode/
+
+# Secrets
+secrets.json
+appsettings.Development.json
+appsettings.Local.json
+local.settings.json
+
+# Logs
+*.log
+logs/
+*.tlog
+
+# Rider and Resharper
+.idea/
+*.DotSettings.user
+
+# Backup and generated files
+*.bak
+Generated_Code/
+
+# Publish output
+wwwroot/dist/
+.publish/
+
+# Node/NPM (if using frontend tools)
+node_modules/
+
+# OS-specific
+.DS_Store
+Thumbs.db

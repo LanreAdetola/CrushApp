@@ -7,9 +7,9 @@ public class UserCreateDto
     [Required]
     public string Username { get; set; } = string.Empty;
 
-    [Required]
+    [Required, EmailAddress]
     public string Email { get; set; } = string.Empty;
     
-    [Required]
+    [Required, MinLength(6)]
     public string Password { get; set; } = string.Empty;
 }

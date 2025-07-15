@@ -1,44 +1,41 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">CrushApp</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
+﻿@using CrushApp.Data.Services
 
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
+@inject UserSessionService Session
+@inject NavigationManager Nav
 
-        <div class="nav-item px-3">
+<div class="nav-scrollable">
+    <nav class="d-flex flex-column gap-2">
+        <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
+            <span class="oi oi-home"></span> Home
+        </NavLink>
+
+        @if (!Session.IsLoggedIn)
+        {
             <NavLink class="nav-link" href="/register">
-                <span class="oi oi-plus" aria-hidden="true"></span> Register
+                <span class="oi oi-plus"></span> Register
             </NavLink>
-        </div>
 
-        <!-- Future login nav item -->
-        @* 
-        <div class="nav-item px-3">
             <NavLink class="nav-link" href="/login">
-                <span class="oi oi-lock-locked" aria-hidden="true"></span> Login
+                <span class="oi oi-lock-locked"></span> Login
             </NavLink>
-        </div>
-        *@
+        }
+        else
+        {
+            <NavLink class="nav-link" href="/profile">
+                <span class="oi oi-person"></span> Profile
+            </NavLink>
+
+            <button class="nav-link btn btn-link text-start w-100" @onclick="Logout">
+                <span class="oi oi-account-logout"></span> Logout
+            </button>
+        }
     </nav>
 </div>
 
 @code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
+    private void Logout()
     {
-        collapseNavMenu = !collapseNavMenu;
+        Session.Logout();
+        Nav.NavigateTo("/login");
     }
 }

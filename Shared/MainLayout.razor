@@ -2,18 +2,16 @@
 
 <PageTitle>CrushApp</PageTitle>
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+<div class="app-container">
+    <div class="d-flex flex-grow-1">
+        <div class="sidebar">
+            <NavMenu />
         </div>
 
-        <article class="content px-4">
+        <main class="flex-grow-1 d-flex flex-column">
             @Body
-        </article>
-    </main>
+        </main>
+    </div>
+
+    <FooterBar />
 </div>
