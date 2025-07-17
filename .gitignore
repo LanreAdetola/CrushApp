@@ -41,3 +41,19 @@ node_modules/
 # OS-specific
 .DS_Store
 Thumbs.db
+
+
+# ASP.NET secrets
+*.db # In case you locally use SQLite
+*.pfx # SSL certs
+
+# Azure publish settings
+PublishProfiles/
+*.pubxml
+*.azurePubxml
+
+# Blazor specific
+wwwroot/css/
+wwwroot/js/
+wwwroot/lib/
+wwwroot/**/*.map
