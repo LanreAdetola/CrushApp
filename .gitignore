@@ -52,8 +52,3 @@ PublishProfiles/
 *.pubxml
 *.azurePubxml
 
-# Blazor specific
-wwwroot/css/
-wwwroot/js/
-wwwroot/lib/
-wwwroot/**/*.map
