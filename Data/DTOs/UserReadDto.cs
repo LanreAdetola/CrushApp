@@ -8,6 +8,9 @@ public class UserReadDto
     public string Role { get; set; } = "User";
     public DateTime CreatedAt { get; set; }
 
+    public int NumericId { get; set; }
+
+
 
 public string Gender { get; set; } = "";
 public int Age { get; set; }

@@ -137,7 +137,7 @@ else
             return;
         }
 
-        var success = await UserService.UpdateUserAsync(Session.CurrentUser.NumericId, updateUser);
+        var success = await UserService.UpdateUserAsync(int.Parse(Session.CurrentUser.Id), updateUser);
         status = success ? "✅ Profile updated successfully!" : "❌ Failed to update profile.";
     }
 }

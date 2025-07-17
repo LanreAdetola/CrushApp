@@ -1,6 +1,12 @@
-﻿@page "/login"
+﻿
+@page "/login"
+@using AutoMapper
+
 @using CrushApp.Data.DTOs
 @using CrushApp.Data.Services
+
+@inject IMapper Mapper
+
 
 @inject UserSessionService Session
 
@@ -63,7 +69,7 @@
 
         error = "";
         // Optionally save user info in state/session here
-        Session.SetUser(user);
+        Session.Login(Mapper.Map<UserReadDto>(user));
 
 
         Nav.NavigateTo("/profile"); // or wherever you want to go after login
