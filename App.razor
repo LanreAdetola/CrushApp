@@ -1,6 +1,5 @@
 ﻿@using CrushApp.Data.Services
 
-
 @inject UserSessionService Session
 
 <Router AppAssembly="@typeof(App).Assembly">
@@ -9,16 +8,22 @@
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
     <NotFound>
-        <PageTitle>Not found</PageTitle>
         <LayoutView Layout="@typeof(MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
+            <p>Sorry, nothing found here.</p>
         </LayoutView>
     </NotFound>
 </Router>
 
 @code {
-    protected override async Task OnInitializedAsync()
+    private bool _initialized = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await Session.InitializeAsync();
+        if (firstRender && !_initialized)
+        {
+            _initialized = true;
+            await Session.InitializeAsync(); // Now safe to call JS
+            StateHasChanged(); // Re-render after state is restored
+        }
     }
 }

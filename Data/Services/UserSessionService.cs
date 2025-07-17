@@ -20,6 +20,7 @@ namespace CrushApp.Data.Services
             _js = js;
         }
 
+        // Call this in App.razor or MainLayout to restore session on reload
         public async Task InitializeAsync()
         {
             var json = await _js.InvokeAsync<string>("localStorage.getItem", "loggedInUser");
@@ -49,6 +50,19 @@ namespace CrushApp.Data.Services
         {
             CurrentUser = null;
             await _js.InvokeVoidAsync("localStorage.removeItem", "loggedInUser");
+            NotifyStateChanged();
+        }
+
+        // ✅ Optional compatibility for older code
+        public void Login(UserReadDto user)
+        {
+            CurrentUser = user;
+            NotifyStateChanged();
+        }
+
+        public void Logout()
+        {
+            CurrentUser = null;
             NotifyStateChanged();
         }
     }
